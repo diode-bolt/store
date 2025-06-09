@@ -18,13 +18,26 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        admin:
+            pattern: ^/admin
+            stateless: true
+            provider: app_admin_provider
+            jwt: ~
+            json_login:
+                check_path: app_admin_login
+                username_path: "email"
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
             pattern: ^/api
             stateless: true
             provider: app_user_provider
-        main:
-            lazy: true
-            provider: app_admin_provider
+            jwt: ~
+            json_login:
+                check_path: app_user_login
+                username_path: "email"
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

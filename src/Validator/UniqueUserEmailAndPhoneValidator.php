@@ -22,14 +22,18 @@ final class UniqueUserEmailAndPhoneValidator extends ConstraintValidator
             throw new UnexpectedTypeException(get_debug_type($value), User::class);
         }
 
-        if ($this->repository->checkUniqueUser($value)) {
-            return;
+        if ($this->repository->findBy(['email'=> $value->getEmail()])) {
+            $this->context->buildViolation('Email {{ email }} already exist')
+                ->setParameter('{{ email }}', $value->getEmail())
+                ->addViolation()
+            ;
         }
 
-        // TODO: implement the validation here
-        $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', $value)
-            ->addViolation()
-        ;
+        if ($this->repository->findBy(['phone'=> $value->getPhone()])) {
+            $this->context->buildViolation('Phone {{ phone }} already exist')
+                ->setParameter('{{ phone }}', $value->getPhone())
+                ->addViolation()
+            ;
+        }
     }
 }

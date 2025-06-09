@@ -2,7 +2,7 @@
 
 namespace App\Response\Dto\Interfaces;
 
-interface JsonResponse
+interface JsonResponseInterface
 {
 
 }

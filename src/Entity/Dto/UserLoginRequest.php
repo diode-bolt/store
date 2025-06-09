@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Request\Dto;
+namespace App\Entity\Dto;
 
 use OpenApi\Attributes\Property;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +13,7 @@ class UserLoginRequest
         type: 'string',
         example: 'vasya@gmail.com'
     )]
-    protected readonly string $email;
+    public readonly string $email;
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 8)]
@@ -22,9 +22,9 @@ class UserLoginRequest
         minLength: 8,
         example: 'you_best_pass',
     )]
-    protected readonly string $password;
+    public readonly string $password;
 
-    public function __construct(string $email, string $password)
+    public function __construct(string $email, #[\SensitiveParameter] string $password)
     {
         $this->email = $email;
         $this->password = $password;

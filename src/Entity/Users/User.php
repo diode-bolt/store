@@ -3,7 +3,9 @@
 namespace App\Entity\Users;
 
 use App\Entity\CartItem;
+use App\Entity\Dto\UserRequest;
 use App\Repository\UserRepository;
+use App\Validator\UniqueUserEmailAndPhone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'Users')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', columns: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_PHONE', columns: ['phone'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -40,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $cart;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $promoId = null;
 
     public function __construct()
     {
@@ -168,5 +174,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->cart->clear();
+    }
+
+    public function getPromoId(): ?string
+    {
+        return $this->promoId;
+    }
+
+    public function setPromoId(?string $promoId): static
+    {
+        $this->promoId = $promoId;
+
+        return $this;
     }
 }

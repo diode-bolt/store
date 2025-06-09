@@ -2,21 +2,22 @@
 
 namespace App\Response\Dto;
 
-use App\Entity\Dto\UserListItem;
+use App\Entity\Dto\ProductListItem;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Response;
 
 #[Response(response: 200)]
-class UserListResponse extends ListResponse
+class ProductListResponse extends ListResponse
 {
+
     /**
-     * @var UserListItem[]
+     * @var ProductListItem[]
      */
     #[Property(
         type: 'array',
-        items: new Items(ref: new Model(type: UserListItem::class))
+        items: new Items(ref: new Model(type: ProductListItem::class))
     )]
     public readonly array $data;
 }

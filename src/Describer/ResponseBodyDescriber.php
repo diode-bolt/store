@@ -2,7 +2,7 @@
 
 namespace App\Describer;
 
-use App\Response\Dto\Interfaces\JsonListResponse;
+use App\Response\Dto\Interfaces\JsonPropertyProviderResponse;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
@@ -60,7 +60,7 @@ class ResponseBodyDescriber implements RouteDescriberInterface
             new Property('success', type: 'boolean', example: true),
         ];
 
-        if (!$classDescriptor->isList) {
+        if (!$classDescriptor->hasProperties) {
             $schema->properties[] = new Property('data', ref: new Model(type: $classDescriptor->class));
         } else {
             array_push($schema->properties, ...$classDescriptor->attributes);
@@ -138,26 +138,35 @@ class ResponseBodyDescriber implements RouteDescriberInterface
 
     private function getClassDescriptor(ReflectionClass $class, array $classProps): ClassDescriptor
     {
-        $isList = $class->implementsInterface(JsonListResponse::class);
+        $hasProperties = $class->implementsInterface(JsonPropertyProviderResponse::class);
         $propsAttr = [];
 
-        if ($isList) {
-            foreach ($class->getProperties() as $property) {
-                $attr = $this->searchAttribute($property->getAttributes(), Property::class);
-
-                if (!$attr) {
-                    continue;
-                }
-
-                $propsAttr[] = $this->propertyDescriber->describe($property, $attr->newInstance());
-            }
+        if ($hasProperties) {
+            $propsAttr = $this->getClassProperties($class);
         }
 
         return new ClassDescriptor(
             $class->getName(),
             $classProps,
             $propsAttr,
-            $isList
+            $hasProperties
         );
+    }
+
+    private function getClassProperties(ReflectionClass $class): array
+    {
+        $propsAttr = [];
+
+        foreach ($class->getProperties() as $property) {
+            $attr = $this->searchAttribute($property->getAttributes(), Property::class);
+
+            if (!$attr) {
+                continue;
+            }
+
+            $propsAttr[] = $this->propertyDescriber->describe($property, $attr->newInstance());
+        }
+
+        return $propsAttr;
     }
 }

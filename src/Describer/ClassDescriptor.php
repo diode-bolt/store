@@ -8,7 +8,7 @@ class ClassDescriptor
         public readonly string $class,
         public readonly array $responseProps,
         public readonly array $attributes,
-        public readonly bool $isList
+        public readonly bool $hasProperties
     )
     {
     }
