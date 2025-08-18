@@ -90,6 +90,9 @@ class ResponseBodyDescriber implements RouteDescriberInterface
         return $schema;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function findClass(ReflectionMethod $reflectionMethod, string $class): ?ClassDescriptor
     {
         if ($this->searchAttribute($reflectionMethod->getAttributes(), $class)) {

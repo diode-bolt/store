@@ -2,7 +2,7 @@
 
 namespace App\Response\Dto;
 
-use App\Entity\Dto\ProductListItem;
+use App\Entity\Dto\Product\ProductListItem;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;

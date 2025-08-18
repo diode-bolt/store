@@ -65,4 +65,11 @@ class CartItem
 
         return $this;
     }
+
+    public function addCount(int $count): static
+    {
+        $this->count += $count;
+
+        return $this;
+    }
 }

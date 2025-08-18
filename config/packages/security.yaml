@@ -19,7 +19,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         admin:
-            pattern: ^/admin
+            pattern: ^/api/admin
             stateless: true
             provider: app_admin_provider
             jwt: ~

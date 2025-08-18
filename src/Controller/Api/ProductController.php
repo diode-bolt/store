@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Dto\ProductItem;
+use App\Entity\Dto\Product\ProductItem;
 use App\Entity\Product;
 use App\Request\Dto\ListRequest;
 use App\Response\Dto\ProductListResponse;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Tag('Product')]
 final class ProductController extends AbstractController
 {
-    #[Route('/list', name: 'app_product_list', methods: ["GET"])]
+    #[Route('/list', name: 'app_product_list', methods: ["post"])]
     public function index(#[MapRequestPayload] ListRequest $request, ProductService $service): ProductListResponse
     {
         return $service->getList($request);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Entity\Dto\User;
 
 use OpenApi\Attributes\Property;
 use Symfony\Component\Validator\Constraints as Assert;

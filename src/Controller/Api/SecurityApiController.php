@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Dto\UserLoginRequest;
-use App\Entity\Dto\UserRequest;
+use App\Entity\Dto\User\UserLoginRequest;
+use App\Entity\Dto\User\UserRequest;
 use App\Response\Dto\UserRegisterResponse;
 use App\Service\UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;

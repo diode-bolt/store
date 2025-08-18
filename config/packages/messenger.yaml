@@ -4,6 +4,7 @@ framework:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             producer:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                serializer: App\Serializer\Messenger\KafkaMessageSerializer
                 options:
                     flushTimeout: 10000
                     flushRetries: 5
@@ -15,6 +16,7 @@ framework:
                         message.send.max.retries: '5'
             consumer:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                serializer: App\Serializer\Messenger\KafkaMessageSerializer
                 options:
                     commitAsync: true
                     receiveTimeout: 10000

@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Dto\UserRequest;
+use App\Entity\Dto\User\UserRequest;
+use App\Entity\Dto\User\UserShow;
+use App\Entity\Users\User;
 use App\Request\Dto\ListRequest;
 use App\Response\Dto\UserListResponse;
 use App\Service\UserService;
@@ -17,26 +19,25 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Tag('users')]
 final class UserController extends AbstractController
 {
-    #[Route(name: 'api_user_index', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function index(#[MapRequestPayload] ListRequest $request, UserService $listService): UserListResponse
-    {
-        return $listService->getList($request);
-    }
-
     #[Route('/show', name: 'app_api_user_show', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function show(): Response
+    public function show(): UserShow
     {
-        return $this->render('api/user/show.html.twig', [
-            'user' => $this->getUser(),
-        ]);
+        /**
+         * @var User $user
+         **/
+        $user = $this->getUser();
+
+        return UserShow::with($user);
     }
 
     #[Route('/edit', name: 'app_api_user_edit', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function edit(#[MapRequestPayload] UserRequest $userDto, UserService $service): Response
     {
+        /**
+         * @var User $user
+         */
         $user = $this->getUser();
         $user
             ->setEmail($userDto->email)
@@ -46,6 +47,6 @@ final class UserController extends AbstractController
 
         $service->changePass($user, $userDto->password);
 
-        return $this->json(['success'=>true]);
+        return $this->json(['success' => true]);
     }
 }

@@ -2,35 +2,38 @@
 
 namespace App\Service;
 
-use App\Entity\Dto\UserListItem;
-use App\Entity\Dto\UserRequest;
+use App\Entity\Dto\User\UserListItem;
+use App\Entity\Dto\User\UserRequest;
 use App\Entity\Users\User;
+use App\Query\Condition\Factory\ConditionFactory;
 use App\Request\Dto\ListRequest;
 use App\Response\Dto\UserListResponse;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
 {
+    use QueryListTrait, FilterConditionBuilder;
     public function __construct(
         private EntityManagerInterface $em,
         private UserPasswordHasherInterface $hasher,
+        private ConditionFactory $conditionFactory
     )
     {
     }
 
     public function getList(ListRequest $request): UserListResponse
     {
-        $query = $this->em
-            ->createQuery('SELECT NEW ' . UserListItem::class .  '(u.id, u.email) FROM ' . User::class . ' u')
-            ->setFirstResult($request->start);
+        $conditions = $this->buildFromFilters($request->filters, User::class);
 
-        if ($request->limit > 0) {
-            $query->setMaxResults($request->limit);
-        }
-
-        $paginator = new Paginator($query);
+        $paginator = $this->getEntityList(
+            User::class,
+            UserListItem::class,
+            $request->start,
+            $request->limit,
+            $conditions,
+            $request->orderBy,
+        );
 
         return new UserListResponse(count($paginator), $paginator->getIterator());
     }
@@ -51,7 +54,7 @@ class UserService
         return $user;
     }
 
-    public function changePass(User $user,#[\SensitiveParameter] string $pass)
+    public function changePass(User $user,#[\SensitiveParameter] string $pass): void
     {
         $user->setPassword($this->hasher->hashPassword($user, $pass));
         $this->em->persist($user);

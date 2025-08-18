@@ -15,24 +15,28 @@ class OrderItem
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Order $forder = null;
+    private ?Order $order = null;
 
     #[ORM\Column]
     private ?int $count = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getForder(): ?Order
+    public function getOrder(): ?Order
     {
-        return $this->forder;
+        return $this->order;
     }
 
-    public function setForder(?Order $forder): static
+    public function setOrder(?Order $order): static
     {
-        $this->forder = $forder;
+        $this->order = $order;
 
         return $this;
     }
@@ -45,6 +49,18 @@ class OrderItem
     public function setCount(int $count): static
     {
         $this->count = $count;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

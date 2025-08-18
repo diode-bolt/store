@@ -2,8 +2,9 @@
 
 namespace App\Service;
 
-use App\Entity\Dto\ProductListItem;
+use App\Entity\Dto\Product\ProductListItem;
 use App\Entity\Product;
+use App\Query\Condition\Factory\ConditionFactory;
 use App\Request\Dto\ListRequest;
 use App\Response\Dto\ProductListResponse;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,22 +12,27 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ProductService
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    use QueryListTrait, FilterConditionBuilder;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private ConditionFactory $conditionFactory,
+    )
     {
     }
 
     public function getList(ListRequest $request): ProductListResponse
     {
-        $query = $this->entityManager
-            ->createQuery('SELECT NEW ' . ProductListItem::class .  '(p.id, p.mame, p.description, p.cost) FROM ' . Product::class . ' p')
-            ->setFirstResult($request->start);
+        $conditions = $this->buildFromFilters($request->filters, Product::class);
 
-        if ($request->limit > 0) {
-            $query->setMaxResults($request->limit);
-        }
+        $paginator = $this->getEntityList(
+            entityClass: Product::class,
+            dtoClass: ProductListItem::class,
+            start: $request->start,
+            limit: $request->limit,
+            conditions: $conditions,
+            orderBy: $request->orderBy,
+        );
 
-        $paginator = new Paginator($query);
-
-        return new ProductListResponse(count($paginator), $paginator->getIterator());
+        return new ProductListResponse(count($paginator), iterator_to_array($paginator->getIterator()));
     }
 }

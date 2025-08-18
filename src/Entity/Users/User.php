@@ -2,10 +2,9 @@
 
 namespace App\Entity\Users;
 
+use App\Collection\CartItemCollection;
 use App\Entity\CartItem;
-use App\Entity\Dto\UserRequest;
 use App\Repository\UserRepository;
-use App\Validator\UniqueUserEmailAndPhone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->cart = new ArrayCollection();
+        $this->cart = new CartItemCollection();
     }
 
     public function getId(): ?int
@@ -138,10 +137,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, CartItem>
+     * @return CartItemCollection<int, CartItem>
      */
-    public function getCart(): Collection
+    public function getCart(): CartItemCollection
     {
+        if (!($this->cart instanceof CartItemCollection)) {
+            $this->cart = new CartItemCollection($this->cart->toArray());
+        }
+
         return $this->cart;
     }
 

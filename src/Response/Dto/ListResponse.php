@@ -2,10 +2,6 @@
 
 namespace App\Response\Dto;
 
-use App\Entity\Dto\UserListItem;
-use App\Response\Dto\Interfaces\JsonPropertyProviderResponse;
-use Nelmio\ApiDocBundle\Attribute\Model;
-use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
 
 class ListResponse implements Interfaces\JsonPropertyProviderResponse

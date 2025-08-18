@@ -24,4 +24,13 @@ enum NotifyType: string
             self::SMS => $user->getPhone()
         };
     }
+
+    public static function getUserNotifyType(User $user): self
+    {
+        if ($user->getPhone()) {
+            return NotifyType::SMS;
+        }
+
+        return NotifyType::EMAIL;
+    }
 }

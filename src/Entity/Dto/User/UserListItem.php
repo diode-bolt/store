@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Entity\Dto\User;
 
 class UserListItem
 {

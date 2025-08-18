@@ -19,17 +19,8 @@ final class UserListener
 
     public function postPersist(User $user, PostUpdateEventArgs $event): void
     {
-        $notifyType = $this->getNotifyType($user);
+        $notifyType = NotifyType::getUserNotifyType($user);
 
         $this->bus->dispatch(new UserRegisterMessage($notifyType, $notifyType->getContact($user), $user->getPromoId()));
-    }
-
-    private function getNotifyType(User $user): NotifyType
-    {
-        if ($user->getPhone()) {
-            return NotifyType::SMS;
-        }
-
-        return NotifyType::EMAIL;
     }
 }

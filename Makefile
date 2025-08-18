@@ -33,24 +33,24 @@ down-v: ## Down containers in current project with data in volumes
 	docker compose down -v
 
 connect-to-php-fpm: ## Run phpcs for ./src
-	docker compose exec -i -t --privileged template-project-php-fpm bash
+	docker compose exec -i -t --privileged php-fpm bash
 
 ### Symfony commands ###
 
 drop-database: ## Drop database
-	docker compose exec -i -t --privileged template-project-php-fpm bin/console doctrine:schema:drop --force --full-database
+	docker compose exec -i -t --privileged php-fpm bin/console doctrine:schema:drop --force --full-database
 
 migrations: ## Execute all migrations
-	docker compose exec -i -t --privileged template-project-php-fpm bin/console doctrine:migrations:migrate -n
+	docker compose exec -i -t --privileged php-fpm bin/console doctrine:migrations:migrate -n
 
 migration-diff: ## Create migration contains difference between db and current entities structure
-	docker compose exec -i -t --privileged template-project-php-fpm bin/console doctrine:migrations:diff
+	docker compose exec -i -t --privileged php-fpm bin/console doctrine:migrations:diff
 
 cache-clear: ## Recreate cache
-	rm -rf ./var/cache && docker compose exec -i -t --privileged template-project-php-fpm bin/console cache:clear --no-warmup
+	rm -rf ./var/cache && docker compose exec -i -t --privileged php-fpm bin/console cache:clear --no-warmup
 
 cache-warmup: ## Recreate cache
-	rm -rf ./var/cache && docker compose exec -i -t --privileged template-project-php-fpm bin/console cache:warmup
+	rm -rf ./var/cache && docker compose exec -i -t --privileged php-fpm bin/console cache:warmup
 
 clear-logs: ## Clear all logs
 	truncate -s 0 ./var/log/*

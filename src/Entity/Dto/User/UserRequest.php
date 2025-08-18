@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Entity\Dto\User;
 
 use App\Validator\UniqueUserEmailAndPhone;
 use OpenApi\Attributes\Property;

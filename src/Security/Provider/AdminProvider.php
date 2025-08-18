@@ -20,7 +20,7 @@ class AdminProvider implements UserProviderInterface, PasswordUpgraderInterface
 
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof Admin) {
+        if (!($user instanceof Admin)) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_debug_type($user)));
         }
 
@@ -43,7 +43,7 @@ class AdminProvider implements UserProviderInterface, PasswordUpgraderInterface
     /**
      * @inheritDoc
      */
-    public function supportsClass(string $class)
+    public function supportsClass(string $class): bool
     {
         return $class === Admin::class;
     }

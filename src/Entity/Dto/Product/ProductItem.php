@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Entity\Dto\Product;
 
 use App\Entity\Product;
 use App\Response\Dto\Interfaces\JsonResponseInterface;

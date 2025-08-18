@@ -2,7 +2,7 @@
 
 namespace App\Response\Dto;
 
-use App\Entity\Dto\UserListItem;
+use App\Entity\Dto\User\UserListItem;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;

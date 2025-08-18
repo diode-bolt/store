@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\OrderDeliveryType;
 use App\Entity\Enums\OrderStatus;
+use App\Entity\Users\User;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,11 +33,15 @@ class Order
     /**
      * @var Collection<int, OrderItem>
      */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'forder')]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order')]
     private Collection $orderItems;
 
     #[ORM\Column]
     private ?int $totalCost = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -84,7 +89,7 @@ class Order
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems->add($orderItem);
-            $orderItem->setForder($this);
+            $orderItem->setOrder($this);
         }
 
         return $this;
@@ -94,8 +99,8 @@ class Order
     {
         if ($this->orderItems->removeElement($orderItem)) {
             // set the owning side to null (unless already changed)
-            if ($orderItem->getForder() === $this) {
-                $orderItem->setForder(null);
+            if ($orderItem->getOrder() === $this) {
+                $orderItem->setOrder(null);
             }
         }
 
@@ -110,6 +115,18 @@ class Order
     public function setTotalCost(int $totalCost): static
     {
         $this->totalCost = $totalCost;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
