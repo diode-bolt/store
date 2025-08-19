@@ -45,9 +45,10 @@ class OrderService
             start: $request->start,
             limit: $request->limit,
             conditions: $conditions,
+            orderBy: $request->orderBy
         );
 
-        return new OrderListResponse($paginator->count(), $paginator->getIterator());
+        return new OrderListResponse($paginator->count(), iterator_to_array($paginator->getIterator()));
     }
 
     public function createOrder(User $user): void

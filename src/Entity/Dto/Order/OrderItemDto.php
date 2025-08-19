@@ -4,7 +4,7 @@ namespace App\Entity\Dto\Order;
 
 use App\Entity\Product;
 
-class OrderItem
+class OrderItemDto
 {
     public function __construct(
         public readonly int $productId,
@@ -15,7 +15,7 @@ class OrderItem
     {
     }
 
-    public static function with(\App\Entity\OrderItem $item): OrderItem
+    public static function with(\App\Entity\OrderItem $item): OrderItemDto
     {
         $product = $item->getProduct();
         $count = $item->getCount();

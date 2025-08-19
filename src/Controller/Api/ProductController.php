@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Tag('Product')]
 final class ProductController extends AbstractController
 {
-    #[Route('/list', name: 'app_product_list', methods: ["GET"])]
+    #[Route('/list', name: 'app_product_list', methods: ["POST"])]
     public function index(#[MapRequestPayload] ListRequest $request, ProductService $service): ProductListResponse
     {
         return $service->getList($request);

@@ -2,7 +2,7 @@
 
 namespace App\Query\Condition\Handlers;
 
-use App\Error\WrongFilterValueException;
+use App\Error\Filter\WrongFilterValueException;
 use App\Query\Condition\Conditions\AbstractCondition;
 use App\Query\Condition\Conditions\InCondition;
 use App\Query\Condition\Validator\ChainConditionValidator;

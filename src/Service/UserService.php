@@ -24,7 +24,7 @@ class UserService
 
     public function getList(ListRequest $request): UserListResponse
     {
-        $conditions = $this->buildFromFilters($request->filters, User::class);
+        $conditions = $this->buildFromFilters($request, User::class);
 
         $paginator = $this->getEntityList(
             User::class,
@@ -35,7 +35,7 @@ class UserService
             $request->orderBy,
         );
 
-        return new UserListResponse(count($paginator), $paginator->getIterator());
+        return new UserListResponse(count($paginator), iterator_to_array($paginator->getIterator()));
     }
 
     public function register(UserRequest $userDto): User

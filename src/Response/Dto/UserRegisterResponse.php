@@ -4,7 +4,9 @@ namespace App\Response\Dto;
 
 use App\Response\Dto\Interfaces\JsonPropertyProviderResponse;
 use OpenApi\Attributes\Property;
+use OpenApi\Attributes\Response;
 
+#[Response(response: 200)]
 class UserRegisterResponse implements JsonPropertyProviderResponse
 {
     #[Property(

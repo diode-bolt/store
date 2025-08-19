@@ -22,7 +22,7 @@ class ProductService
 
     public function getList(ListRequest $request): ProductListResponse
     {
-        $conditions = $this->buildFromFilters($request->filters, Product::class);
+        $conditions = $this->buildFromFilters($request, Product::class);
 
         $paginator = $this->getEntityList(
             entityClass: Product::class,

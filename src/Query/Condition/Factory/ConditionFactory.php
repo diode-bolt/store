@@ -2,7 +2,7 @@
 
 namespace App\Query\Condition\Factory;
 
-use App\Error\WrongFilterTypeException;
+use App\Error\Filter\WrongFilterTypeException;
 use App\Query\Condition\Conditions\AbstractCondition;
 use App\Query\Condition\Interfaces\ConditionHandlerInterface;
 use App\Request\Dto\FilterDto;

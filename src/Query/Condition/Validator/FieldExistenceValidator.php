@@ -2,7 +2,7 @@
 
 namespace App\Query\Condition\Validator;
 
-use App\Error\WrongFilterTypeException;
+use App\Error\Filter\FilterValidationException;
 use App\Query\Condition\Interfaces\ConditionValidatorInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -14,6 +14,6 @@ class FieldExistenceValidator implements ConditionValidatorInterface
             return;
         }
 
-        throw new WrongFilterTypeException('filter by ' . $field . ' not exist');
+        throw new FilterValidationException('filter by ' . $field . ' not exist', 'field', $field);
     }
 }

@@ -28,7 +28,7 @@ class FieldAssocValidator implements ConditionValidatorInterface
 
         if (isset($associationMapping->joinColumns)) {
             foreach ($associationMapping->joinColumns as $joinColumn) {
-                if (isset($joinColumn->nullable) && $joinColumn->nullable === true && is_null($value)) {
+                if (isset($joinColumn->nullable) && $joinColumn->nullable && is_null($value)) {
                     return;
                 }
             }

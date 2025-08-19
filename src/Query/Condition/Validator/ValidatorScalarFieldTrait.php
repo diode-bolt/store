@@ -2,61 +2,60 @@
 
 namespace App\Query\Condition\Validator;
 
-use App\Error\WrongFilterValueException;
+use App\Error\Filter\FilterValidationException;
 use Doctrine\DBAL\Types\Types;
 
 trait ValidatorScalarFieldTrait
 {
     private function validateScalarType(mixed $value, string $doctrineType, string $fieldName): void
     {
-        $errorTemplate = 'Value for field "%s" must be %s, %s given.';
-
         switch ($doctrineType) {
             case Types::INTEGER:
             case Types::BIGINT:
-                if (!is_int($value)) {
-                    throw new WrongFilterValueException(
-                        sprintf($errorTemplate, $fieldName, 'integer', gettype($value))
-                    );
+                if (is_int($value)) {
+                    return;
                 }
+                $neededType = 'integer';
                 break;
 
             case Types::STRING:
             case Types::TEXT:
-                if (!is_string($value)) {
-                    throw new WrongFilterValueException(
-                        sprintf($errorTemplate, $fieldName, 'string', gettype($value))
-                    );
+                if (is_string($value)) {
+                    return;
                 }
+                $neededType = 'string';
                 break;
 
             case Types::BOOLEAN:
-                if (!is_bool($value)) {
-                    throw new WrongFilterValueException(
-                        sprintf($errorTemplate, $fieldName, 'boolean', gettype($value))
-                    );
+                if (is_bool($value)) {
+                    return;
                 }
+                $neededType = 'boolean';
                 break;
 
             case Types::FLOAT:
             case Types::DECIMAL:
-                if (!is_float($value) && !is_int($value)) {
-                    throw new WrongFilterValueException(
-                        sprintf($errorTemplate, $fieldName, 'float', gettype($value))
-                    );
+                if (is_float($value) && !is_int($value)) {
+                    return;
                 }
+                $neededType = 'float';
                 break;
             case Types::DATETIME_MUTABLE:
             case Types::DATETIME_IMMUTABLE:
-                if (!strtotime($value)) {
-                    throw new WrongFilterValueException(
-                        sprintf($errorTemplate, $fieldName, 'DateTime', $value)
-                    );
+                if (strtotime($value)) {
+                    return;
                 }
+                $neededType = 'DateTime';
                 break;
 
             default:
-                break;
+                return;
         }
+
+        throw new FilterValidationException(
+            sprintf('Value for field "%s" must be %s, %s given.', $fieldName, $neededType, gettype($value)),
+            'value',
+            $value
+        );
     }
 }

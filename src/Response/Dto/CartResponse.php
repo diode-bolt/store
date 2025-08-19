@@ -7,10 +7,14 @@ use App\Response\Dto\Interfaces\JsonPropertyProviderResponse;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
+use OpenApi\Attributes\Response;
 
+#[Response(response: 200)]
 class CartResponse implements JsonPropertyProviderResponse
 {
+    #[Property]
     public readonly int $totalCount;
+    #[Property]
     public readonly float $totalCost;
     #[Property(
         type: 'array',
