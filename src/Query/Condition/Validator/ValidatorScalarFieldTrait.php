@@ -2,6 +2,7 @@
 
 namespace App\Query\Condition\Validator;
 
+use App\Error\WrongFilterValueException;
 use Doctrine\DBAL\Types\Types;
 
 trait ValidatorScalarFieldTrait
@@ -14,7 +15,7 @@ trait ValidatorScalarFieldTrait
             case Types::INTEGER:
             case Types::BIGINT:
                 if (!is_int($value)) {
-                    throw new \InvalidArgumentException(
+                    throw new WrongFilterValueException(
                         sprintf($errorTemplate, $fieldName, 'integer', gettype($value))
                     );
                 }
@@ -23,7 +24,7 @@ trait ValidatorScalarFieldTrait
             case Types::STRING:
             case Types::TEXT:
                 if (!is_string($value)) {
-                    throw new \InvalidArgumentException(
+                    throw new WrongFilterValueException(
                         sprintf($errorTemplate, $fieldName, 'string', gettype($value))
                     );
                 }
@@ -31,7 +32,7 @@ trait ValidatorScalarFieldTrait
 
             case Types::BOOLEAN:
                 if (!is_bool($value)) {
-                    throw new \InvalidArgumentException(
+                    throw new WrongFilterValueException(
                         sprintf($errorTemplate, $fieldName, 'boolean', gettype($value))
                     );
                 }
@@ -40,7 +41,7 @@ trait ValidatorScalarFieldTrait
             case Types::FLOAT:
             case Types::DECIMAL:
                 if (!is_float($value) && !is_int($value)) {
-                    throw new \InvalidArgumentException(
+                    throw new WrongFilterValueException(
                         sprintf($errorTemplate, $fieldName, 'float', gettype($value))
                     );
                 }
@@ -48,7 +49,7 @@ trait ValidatorScalarFieldTrait
             case Types::DATETIME_MUTABLE:
             case Types::DATETIME_IMMUTABLE:
                 if (!strtotime($value)) {
-                    throw new \InvalidArgumentException(
+                    throw new WrongFilterValueException(
                         sprintf($errorTemplate, $fieldName, 'DateTime', $value)
                     );
                 }

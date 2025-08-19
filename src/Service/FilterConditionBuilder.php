@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Error\AbstractFilterException;
 use App\Query\Condition\Factory\ConditionFactory;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 trait FilterConditionBuilder
 {
@@ -12,9 +14,14 @@ trait FilterConditionBuilder
     {
         $conditions = [];
 
-        foreach ($filters as $filter) {
-            $conditions[] = $this->conditionFactory->create($entityName, $filter);
+        try {
+            foreach ($filters as $key => $filter) {
+                $conditions[] = $this->conditionFactory->create($entityName, $filter);
+            }
+        } catch (AbstractFilterException $exception) {
+            throw new BadRequestException();
         }
+
 
         return $conditions;
     }

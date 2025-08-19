@@ -44,6 +44,7 @@ framework:
             messenger.bus.default: []
 
         routing:
+            App\Message\UserRegisterMessage: producer
             #Symfony\Component\Mailer\Messenger\SendEmailMessage: async
 
             # Route your messages to the transports

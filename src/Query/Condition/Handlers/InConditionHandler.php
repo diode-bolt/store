@@ -2,6 +2,7 @@
 
 namespace App\Query\Condition\Handlers;
 
+use App\Error\WrongFilterValueException;
 use App\Query\Condition\Conditions\AbstractCondition;
 use App\Query\Condition\Conditions\InCondition;
 use App\Query\Condition\Validator\ChainConditionValidator;
@@ -24,7 +25,7 @@ class InConditionHandler extends AbstractConditionHandler
         $this->validator->validate($metadata, $field, $value);
 
         if (is_array($value) && !array_all($value, 'is_scalar')) {
-            throw new \InvalidArgumentException('incorrect values');
+            throw new WrongFilterValueException('incorrect values');
         }
 
         return new InCondition($field, $value);

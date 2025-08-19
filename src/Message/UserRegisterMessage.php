@@ -9,7 +9,7 @@ class UserRegisterMessage
     public function __construct(
         public readonly NotifyType $type,
         public readonly string $contact,
-        public readonly string $promoId
+        public readonly ?string $promoId
     )
     {
     }

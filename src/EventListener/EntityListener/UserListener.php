@@ -17,7 +17,7 @@ final class UserListener
     {
     }
 
-    public function postPersist(User $user, PostUpdateEventArgs $event): void
+    public function postPersist(User $user): void
     {
         $notifyType = NotifyType::getUserNotifyType($user);
 

@@ -2,6 +2,7 @@
 
 namespace App\Query\Condition\Factory;
 
+use App\Error\WrongFilterTypeException;
 use App\Query\Condition\Conditions\AbstractCondition;
 use App\Query\Condition\Interfaces\ConditionHandlerInterface;
 use App\Request\Dto\FilterDto;
@@ -30,7 +31,7 @@ class ConditionFactory
         FilterDto $filterDto,
     ): AbstractCondition {
         if (!isset($this->handlers[$filterDto->type])) {
-            throw new \InvalidArgumentException("filter with type $filterDto->type not support");
+            throw new WrongFilterTypeException("filter with type $filterDto->type not support");
         }
 
         $metadata = $this->manager->getClassMetadata($entityClass);

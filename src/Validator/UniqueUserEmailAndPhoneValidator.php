@@ -2,6 +2,7 @@
 
 namespace App\Validator;
 
+use App\Entity\Dto\User\UserRequest;
 use App\Entity\Users\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraint;
@@ -18,20 +19,20 @@ final class UniqueUserEmailAndPhoneValidator extends ConstraintValidator
     {
         /* @var UniqueUserEmailAndPhone $constraint */
 
-        if (!($value instanceof User)) {
+        if (!($value instanceof UserRequest)) {
             throw new UnexpectedTypeException(get_debug_type($value), User::class);
         }
 
-        if ($this->repository->findBy(['email'=> $value->getEmail()])) {
+        if ($this->repository->findBy(['email'=> $value->email])) {
             $this->context->buildViolation('Email {{ email }} already exist')
-                ->setParameter('{{ email }}', $value->getEmail())
+                ->setParameter('{{ email }}', $value->email)
                 ->addViolation()
             ;
         }
 
-        if ($this->repository->findBy(['phone'=> $value->getPhone()])) {
+        if ($this->repository->findBy(['phone'=> $value->phone])) {
             $this->context->buildViolation('Phone {{ phone }} already exist')
-                ->setParameter('{{ phone }}', $value->getPhone())
+                ->setParameter('{{ phone }}', $value->phone)
                 ->addViolation()
             ;
         }
